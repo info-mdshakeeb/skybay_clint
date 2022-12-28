@@ -21,7 +21,7 @@ export const router = createBrowserRouter([
             {
                 path: '/media/:id',
                 loader: ({ params }) => fetch(`http://localhost:2100/post/${params.id}`),
-                element: <DetailsPage />
+                element: <ProvateRoutes><DetailsPage /></ProvateRoutes>
             },
         ]
     },

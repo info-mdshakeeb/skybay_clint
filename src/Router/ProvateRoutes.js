@@ -4,7 +4,7 @@ import { AuthUser } from '../Context/UserContext';
 
 const ProvateRoutes = ({ children }) => {
 
-    const { user, loading } = useContext(AuthUser)
+    const { user } = useContext(AuthUser)
     const location = useLocation();
 
     if (!user) {

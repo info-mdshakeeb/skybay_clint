@@ -1,19 +1,28 @@
 import React, { useContext, useState } from 'react';
 import { BiComment } from "react-icons/bi";
-import { GiSelfLove } from "react-icons/gi";
+import { GiRoyalLove } from "react-icons/gi";
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
 import { Link } from "react-router-dom";
 import { AuthUser } from '../Context/UserContext';
-
-const PostCart = ({ posts }) => {
+const PostCart = ({ posts, refetch }) => {
 
     const { user } = useContext(AuthUser)
+    const [like, setLike] = useState(true)
     const [commentPostData, srtCommentPostData] = useState([])
     const { _id, postImg, postDetails, dataAdded, email, name, userPicture } = commentPostData;
-    console.log(commentPostData);
-
-
+    const heandelLike = (like, postid) => {
+        console.log(like);
+        fetch(`http://localhost:2100/posts/${postid}`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({ postid, like })
+        }).then(re => {
+            refetch()
+        }).catch(error => console.log(error))
+    }
     const heandelComment = (e) => {
         e.preventDefault()
         const form = e.target;
@@ -72,30 +81,33 @@ const PostCart = ({ posts }) => {
                             <div className="rounded-md overflow-hidden mt-2">
                                 <PhotoProvider>
                                     <PhotoView src={post.postImg} >
+
                                         <img className=' object-cover  object-center w-full rounded shadow-lg h-96' src={post.postImg} alt="" />
                                     </PhotoView>
                                 </PhotoProvider>
-
                             </div>
-
                         }
                         <div className="my-3 mx-3 flex gap-5">
                             <div className="flex items-center gap-1">
-                                <GiSelfLove />
-                                <p>10</p>
+                                <GiRoyalLove onClick={() => heandelLike(like, post._id)} />
+                                <p>{post?.likes?.length}</p>
+
                             </div>
                             <div className="flex items-center gap-1">
                                 <BiComment />
                             </div>
                         </div>
-                        <form onSubmit={heandelComment}
-                            className="px-3 flex gap-2 justify-center">
-                            <div className="w-14 rounded-full overflow-hidden h-10">
-                                <img className='' src={user?.photoURL} alt="" />
-                            </div>
-                            <textarea name='text' className='border rounded-md w-full' placeholder='Leave A Comment'></textarea>
-                            <button onClick={() => srtCommentPostData(post)} className='btn'>Commnet</button>
-                        </form>
+                        {user?.uid ?
+                            <form onSubmit={heandelComment}
+                                className="px-3 flex gap-2 justify-center">
+                                <div className="w-14 rounded-full overflow-hidden h-10">
+                                    <img className='' src={user?.photoURL} alt="" />
+                                </div>
+                                <textarea name='text' className='border rounded-md w-full' placeholder='Leave A Comment'></textarea>
+                                <button onClick={() => srtCommentPostData(post)} className='btn'>Commnet</button>
+                            </form> :
+                            <div className="text-red-300">Login gor comment</div>
+                        }
 
                     </div>
                 </div>

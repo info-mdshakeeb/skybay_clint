@@ -4,17 +4,19 @@ import { BiHappyAlt, BiTrendingUp } from "react-icons/bi";
 import { FaHome } from "react-icons/fa";
 import { FcStackOfPhotos } from 'react-icons/fc';
 import { FiLoader, FiLogOut } from "react-icons/fi";
-
 import { RiLiveFill } from 'react-icons/ri';
+import { Link } from 'react-router-dom';
 import { AuthUser } from '../../Context/UserContext';
 import PostCart from '../PostCart';
 import MediaModal from './MediaModal';
+
+
 
 const Media = () => {
 
     const { user, logOut } = useContext(AuthUser)
     const [modal, setModal] = useState(true)
-    console.log(user);
+
     const { data: posts = [], isLoading, refetch } = useQuery({
         queryKey: ['post'],
         queryFn: async () => {
@@ -23,35 +25,40 @@ const Media = () => {
             return data
         }
     })
+
     if (isLoading) return <div className="">loading</div>
     return (
-        <div className='min-h-screen container lg:px-28 m-auto'>
+        <div className='min-h-screen container lg:px-28 m-auto '>
             <div className="pt-20"></div>
             <div className="md:flex gap-6 ">
                 <div className="md:w-2/6 p-3 md:p-0">
-                    <div className="bg-white shadow-md shadow-gray-300 rounded-md mb-5 p-6">
+                    <div className="bg-white shadow-md shadow-gray-300 rounded-md mb-5 p-6 md:fixed md:w-60">
                         <h2 className='text-gray-400 mb-3'>NAVIGATION</h2>
                         <div
                             className="flex items-center mb-3 gap-3 cursor-pointer ">
                             <FaHome className='hover:scale-125 duration-200' />
-                            <p className=' hover:scale-105 duration-200'> home</p>
+                            <Link to='/'> <p className=' hover:scale-105 duration-200'>home</p></Link>
+
                         </div>
                         <div
                             className="flex items-center mb-3 gap-3 cursor-pointer ">
                             <BiTrendingUp className='hover:scale-125 duration-200' />
-                            <p className=' hover:scale-105 duration-200'> trending</p>
+                            <a href="#TraindingPOst">  <p className=' hover:scale-105 duration-200'>trending</p></a>
+
                         </div>
                         <div
                             className="flex items-center mb-3 gap-3 cursor-pointer ">
                             <FiLoader className='hover:scale-125 duration-200' />
-                            <p className=' hover:scale-105 duration-200'> Recent post</p>
+                            <a href="#RecentPOst"><p className=' hover:scale-105 duration-200'>Recent post</p></a>
+
                         </div>
                         <div
                             className="flex items-center mb-3 gap-3 cursor-pointer ">
                             <FiLogOut className='hover:scale-125 duration-200' />
-                            <p
-                                onClick={logOut}
-                                className=' hover:scale-105 duration-200'> SignOut</p>
+                            {user ? <p onClick={logOut}
+                                className=' hover:scale-105 duration-200'> SignOut</p> :
+                                <Link to='/login'>Login</Link>
+                            }
                         </div>
                     </div>
                 </div>
@@ -90,12 +97,14 @@ const Media = () => {
                                             htmlFor="my-modal-3" className=''>Felling/activites</label>
                                     </div>
                                 </div>
-                            </div> : <div>Place login</div>}
+                            </div> : <div className=''>Place login For give Status</div>}
                     </div>
-                    <h2 className='font-bold text-xl py-7'>Recent post :</h2>
+                    <h2 id='RecentPOst' className='font-bold text-xl py-7'>Recent post :</h2>
                     <PostCart
+                        refetch={refetch}
                         posts={posts.data}
                     />
+                    <h2 id='TraindingPOst' className='font-bold text-xl py-7'>Trainding post :</h2>
                 </div>
             </div>
             {modal &&
