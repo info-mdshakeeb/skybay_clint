@@ -5,7 +5,7 @@ import { AuthUser } from '../Context/UserContext';
 
 const NavBar = () => {
     const { user } = useContext(AuthUser)
-    console.log(user);
+    // console.log(user);
     const navItem =
         <>
             <li><NavLink to='/Media'>Media</NavLink></li>
@@ -14,8 +14,8 @@ const NavBar = () => {
         </>
 
     return (
-        <div className="shadow-lg ">
-            <div className="navbar container md:px-14 mx-auto ">
+        <div className="shadow-lg bg-white fixed w-full z-50">
+            <div className="navbar container bg-white lg:px-28 m-auto z-50 ">
                 <div className="navbar-start ">
                     <div className="dropdown">
                         <label tabIndex={0} className="btn btn-ghost lg:hidden">
