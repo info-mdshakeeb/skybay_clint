@@ -33,12 +33,9 @@ const MediaModal = ({ setModal, refetch }) => {
         const relaacePostData = (imgUrl) => {
             console.log(imgUrl);
             const postdata = {
-                creatorData: {
-                    name: user.displayName,
-                    email: user.email,
-                    id: user.uid,
-                    picture: user.photoURL
-                },
+                name: user.displayName,
+                email: user.email,
+                userPicture: user.photoURL,
                 postDetails: data.text,
                 postImg: imgUrl,
                 dataAdded: new Date()
@@ -75,9 +72,9 @@ const MediaModal = ({ setModal, refetch }) => {
                         <hr className='w-full' />
                         <div className="flex gap-2 py-4 items-center">
                             <div className="w-12 rounded-full overflow-hidden">
-                                <img src={user.photoURL} alt="" />
+                                <img src={user?.photoURL} alt="" />
                             </div>
-                            <h2 className='text-xl font-bold text-gray-700'>{user.displayName}</h2>
+                            <h2 className='text-xl font-bold text-gray-700'>{user?.displayName}</h2>
                         </div>
                         <div className="my-4">
                             <textarea

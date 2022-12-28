@@ -1,13 +1,53 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { BiComment } from "react-icons/bi";
 import { GiSelfLove } from "react-icons/gi";
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
+import { Link } from "react-router-dom";
 import { AuthUser } from '../Context/UserContext';
 
 const PostCart = ({ posts }) => {
+
     const { user } = useContext(AuthUser)
-    console.log(posts);
+    const [commentPostData, srtCommentPostData] = useState([])
+    const { _id, postImg, postDetails, dataAdded, email, name, userPicture } = commentPostData;
+    console.log(commentPostData);
+
+
+    const heandelComment = (e) => {
+        e.preventDefault()
+        const form = e.target;
+        const comment = form.text.value
+        const commentData = {
+            postID: _id,
+            postDetails: {
+                postImg, postDetails, postDate: dataAdded
+            },
+            postCreatotEmail: email,
+            postCreatotdetails: {
+                name, userPicture
+            },
+            commcentCreatorEmail: user.email,
+            commcentCreatorData: {
+                name: user?.displayName, picture: user?.photoURL
+            },
+            comment, commentDate: new Date(),
+        }
+        //
+        fetch(`http://localhost:2100/comments`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(commentData)
+        }).then(re => {
+            form.reset()
+            console.log(re);
+        })
+            .catch(err => { console.log(err) })
+    }
+
+
     return (
         <>
             {posts?.map(post =>
@@ -16,20 +56,16 @@ const PostCart = ({ posts }) => {
                         <div className="flex  justify-between mx-2">
                             <div className="flex gap-3">
                                 <div className="w-12 rounded-full overflow-hidden">
-                                    <img className='' src={post?.creatorData
-                                        ?.picture} alt="" />
-                                    {/* {console.log(post)} */}
+                                    <img className='' src={post?.userPicture} alt="" />
                                 </div>
                                 <div className="">
-                                    <p> <span className='font-bold mr-2'>{post?.creatorData?.name} </span> create this post</p>
+                                    <p> <span className='font-bold mr-2'>{post?.name} </span> create this post</p>
                                     <p className='text-sm text-gray-400'>{
                                         post.dataAdded.length > 12 ? post.dataAdded.slice(0, 10) : post.dataAdded.length
-
-
                                     }</p>
                                 </div>
                             </div>
-                            <div className="pr-4 btn btn-ghost">Details</div>
+                            <Link to={`/media/${post._id}`}> <div className="pr-4 btn btn-sm">Details</div></Link>
                         </div>
                         <p className='mt-2 p-3'> {post.postDetails}</p>
                         {post.postImg &&
@@ -50,17 +86,16 @@ const PostCart = ({ posts }) => {
                             </div>
                             <div className="flex items-center gap-1">
                                 <BiComment />
-                                <p>10</p>
                             </div>
                         </div>
-                        <div className="px-3 flex gap-2 justify-center">
+                        <form onSubmit={heandelComment}
+                            className="px-3 flex gap-2 justify-center">
                             <div className="w-14 rounded-full overflow-hidden h-10">
-                                <img className='' src={user.photoURL} alt="" />
+                                <img className='' src={user?.photoURL} alt="" />
                             </div>
-                            <textarea className='border rounded-md w-full' placeholder='Leave A Comment'></textarea>
-                            <button className='btn'>Commnet</button>
-
-                        </div>
+                            <textarea name='text' className='border rounded-md w-full' placeholder='Leave A Comment'></textarea>
+                            <button onClick={() => srtCommentPostData(post)} className='btn'>Commnet</button>
+                        </form>
 
                     </div>
                 </div>

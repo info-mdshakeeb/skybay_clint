@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import { BiHappyAlt, BiTrendingUp } from "react-icons/bi";
 import { FaHome } from "react-icons/fa";
 import { FcStackOfPhotos } from 'react-icons/fc';
-import { FiLoader } from "react-icons/fi";
+import { FiLoader, FiLogOut } from "react-icons/fi";
 
 import { RiLiveFill } from 'react-icons/ri';
 import { AuthUser } from '../../Context/UserContext';
@@ -12,10 +12,9 @@ import MediaModal from './MediaModal';
 
 const Media = () => {
 
-
-    const { user } = useContext(AuthUser)
+    const { user, logOut } = useContext(AuthUser)
     const [modal, setModal] = useState(true)
-
+    console.log(user);
     const { data: posts = [], isLoading, refetch } = useQuery({
         queryKey: ['post'],
         queryFn: async () => {
@@ -32,54 +31,66 @@ const Media = () => {
                 <div className="md:w-2/6 p-3 md:p-0">
                     <div className="bg-white shadow-md shadow-gray-300 rounded-md mb-5 p-6">
                         <h2 className='text-gray-400 mb-3'>NAVIGATION</h2>
-                        <div className="flex items-center gap-3 mb-3  ">
-                            <FaHome></FaHome>
-                            <p>home</p>
+                        <div
+                            className="flex items-center mb-3 gap-3 cursor-pointer ">
+                            <FaHome className='hover:scale-125 duration-200' />
+                            <p className=' hover:scale-105 duration-200'> home</p>
                         </div>
-                        <div className="flex items-center gap-3 mb-3  ">
-                            <BiTrendingUp></BiTrendingUp>
-                            <p> trending</p>
+                        <div
+                            className="flex items-center mb-3 gap-3 cursor-pointer ">
+                            <BiTrendingUp className='hover:scale-125 duration-200' />
+                            <p className=' hover:scale-105 duration-200'> trending</p>
                         </div>
-                        <div className="flex items-center gap-3 mb-3 ">
-                            <FiLoader></FiLoader>
-                            <p> Recent post</p>
+                        <div
+                            className="flex items-center mb-3 gap-3 cursor-pointer ">
+                            <FiLoader className='hover:scale-125 duration-200' />
+                            <p className=' hover:scale-105 duration-200'> Recent post</p>
+                        </div>
+                        <div
+                            className="flex items-center mb-3 gap-3 cursor-pointer ">
+                            <FiLogOut className='hover:scale-125 duration-200' />
+                            <p
+                                onClick={logOut}
+                                className=' hover:scale-105 duration-200'> SignOut</p>
                         </div>
                     </div>
                 </div>
                 <div className="grow md:w-2/6 p-3 md:p-0">
                     <div className="bg-white shadow-md shadow-gray-300 rounded-md mb-5 p-4 ">
-                        <div className="flex gap-5 mb-3">
-                            <div className="w-12 rounded-full overflow-hidden">
-                                <img src={user?.photoURL} alt="" />
-                            </div>
-                            <label htmlFor="my-modal-3" className='grow py-3 border rounded-full' placeholder="">
-                                <p className='pl-3 text-gray-300'>What's your maind,{user?.displayName}?</p>
-                            </label>
-                        </div>
-                        <hr />
-                        <div
-
-                            className="flex justify-around  "
-                            onClick={() => setModal(true)}>
-                            <div
-                                className="flex items-center mt-3 btn-sm btn btn-outline lg:gap-3 ">
-                                <RiLiveFill />
-                                <label
-                                    htmlFor="my-modal-3" className=''>Live Vedio</label>
-                            </div>
-                            <div
-                                className="flex items-center mt-3 btn-sm btn btn-outline lg:gap-3 ">
-                                <FcStackOfPhotos />
-                                <label
-                                    htmlFor="my-modal-3" className=''>Photos\Vedio</label>
-                            </div>
-                            <div
-                                className="flex items-center mt-3 btn-sm btn btn-outline lg:gap-3 ">
-                                <BiHappyAlt />
-                                <label
-                                    htmlFor="my-modal-3" className=''>Felling/activites</label>
-                            </div>
-                        </div>
+                        {user?.uid ?
+                            <div className="">
+                                <div className="flex gap-5 mb-3">
+                                    <div className="w-12 rounded-full overflow-hidden">
+                                        <img src={user?.photoURL} alt="" />
+                                    </div>
+                                    <label htmlFor="my-modal-3" className='grow py-3 border rounded-full' placeholder="">
+                                        <p className='pl-3 text-gray-300'>What's your maind,{user?.displayName}?</p>
+                                    </label>
+                                </div>
+                                <hr />
+                                <div
+                                    className="flex justify-around  "
+                                    onClick={() => setModal(true)}>
+                                    <div
+                                        className="flex items-center mt-3 btn-sm btn btn-outline lg:gap-3 ">
+                                        <RiLiveFill />
+                                        <label
+                                            htmlFor="my-modal-3" className=''>Live Vedio</label>
+                                    </div>
+                                    <div
+                                        className="flex items-center mt-3 btn-sm btn btn-outline lg:gap-3 ">
+                                        <FcStackOfPhotos />
+                                        <label
+                                            htmlFor="my-modal-3" className=''>Photos\Vedio</label>
+                                    </div>
+                                    <div
+                                        className="flex items-center mt-3 btn-sm btn btn-outline lg:gap-3 ">
+                                        <BiHappyAlt />
+                                        <label
+                                            htmlFor="my-modal-3" className=''>Felling/activites</label>
+                                    </div>
+                                </div>
+                            </div> : <div>Place login</div>}
                     </div>
                     <h2 className='font-bold text-xl py-7'>Recent post :</h2>
                     <PostCart

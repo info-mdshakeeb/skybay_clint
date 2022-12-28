@@ -38,8 +38,6 @@ const UpdateModule = ({ setModuleData, moduleData, refetch }) => {
                 }).catch(error => console.log(error))
             })
             .catch(error => errorMessage(error.message))
-
-
     }
     // console.log(moduleData);
     refetch()
@@ -91,10 +89,6 @@ const UpdateModule = ({ setModuleData, moduleData, refetch }) => {
                             {errors.university && <span className="label-text text-red-400">{errors?.university.message}</span>}
                         </div>
                         <button className="btn btn-primary w-3/5 mt-3"> Update</button>
-
-
-
-
                     </form>
                 </div>
             </div>
