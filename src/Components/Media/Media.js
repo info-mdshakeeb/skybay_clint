@@ -25,6 +25,15 @@ const Media = () => {
             return data
         }
     })
+    const { data: likeposts = [] } = useQuery({
+        queryKey: ['post'],
+        queryFn: async () => {
+            const res = await fetch('http://localhost:2100/likeposts')
+            const data = res.json();
+            return data
+        }
+    })
+    console.log(likeposts);
 
     if (isLoading) return <div className="">loading</div>
     return (
@@ -105,6 +114,10 @@ const Media = () => {
                         posts={posts.data}
                     />
                     <h2 id='TraindingPOst' className='font-bold text-xl py-7'>Trainding post :</h2>
+                    <PostCart
+                        refetch={refetch}
+                        Tposts={likeposts.data}
+                    />
                 </div>
             </div>
             {modal &&

@@ -11,8 +11,11 @@ const PostCart = ({ posts, refetch }) => {
     const [like, setLike] = useState(true)
     const [commentPostData, srtCommentPostData] = useState([])
     const { _id, postImg, postDetails, dataAdded, email, name, userPicture } = commentPostData;
+
+    console.log(like);
+
     const heandelLike = (like, postid) => {
-        console.log(like);
+
         fetch(`http://localhost:2100/posts/${postid}`, {
             method: 'PUT',
             headers: {
@@ -76,21 +79,23 @@ const PostCart = ({ posts, refetch }) => {
                             </div>
                             <Link to={`/media/${post._id}`}> <div className="pr-4 btn btn-sm">Details</div></Link>
                         </div>
-                        <p className='mt-2 p-3'> {post.postDetails}</p>
+                        <p className='mt-2 p-3'> {post?.postDetails}</p>
                         {post.postImg &&
                             <div className="rounded-md overflow-hidden mt-2">
                                 <PhotoProvider>
-                                    <PhotoView src={post.postImg} >
+                                    <PhotoView src={post?.postImg} >
 
-                                        <img className=' object-cover  object-center w-full rounded shadow-lg h-96' src={post.postImg} alt="" />
+                                        <img className=' object-cover  object-center w-full rounded shadow-lg h-96' src={post?.postImg} alt="" />
                                     </PhotoView>
                                 </PhotoProvider>
                             </div>
                         }
                         <div className="my-3 mx-3 flex gap-5">
                             <div className="flex items-center gap-1">
-                                <GiRoyalLove onClick={() => heandelLike(like, post._id)} />
-                                <p>{post?.likes?.length}</p>
+                                <GiRoyalLove
+
+                                    onClick={() => heandelLike(like, post._id)} />
+                                <p>{post?.likes}</p>
 
                             </div>
                             <div className="flex items-center gap-1">
@@ -106,7 +111,7 @@ const PostCart = ({ posts, refetch }) => {
                                 <textarea name='text' className='border rounded-md w-full' placeholder='Leave A Comment'></textarea>
                                 <button onClick={() => srtCommentPostData(post)} className='btn'>Commnet</button>
                             </form> :
-                            <div className="text-red-300">Login gor comment</div>
+                            <div className="text-red-300">Login got comment</div>
                         }
 
                     </div>
