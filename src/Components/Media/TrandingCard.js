@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { BiComment } from "react-icons/bi";
 import { GiRoyalLove } from "react-icons/gi";
 import { PhotoProvider, PhotoView } from 'react-photo-view';
@@ -7,69 +7,9 @@ import { Link } from "react-router-dom";
 import { AuthUser } from '../../Context/UserContext';
 
 
-const TrandingCard = ({ refetch, posts }) => {
+const TrandingCard = ({ heandelLike, like, heandelComment, srtCommentPostData, datA }) => {
     const { user } = useContext(AuthUser)
-    const [like, setLike] = useState(true)
-    const [datA, setDatA] = useState([])
 
-    const [commentPostData, srtCommentPostData] = useState([])
-    const { _id, postImg, postDetails, dataAdded, email, name, userPicture } = commentPostData;
-
-
-    useEffect(() => {
-        fetch('http://localhost:2100/likeposts?type=tranding')
-            .then(results => results.json())
-            .then(data => {
-                console.log(data.data);
-                setDatA(data.data);
-            });
-    }, [posts]);
-
-
-    const heandelLike = (like, postid) => {
-
-        fetch(`http://localhost:2100/posts/${postid}`, {
-            method: 'PUT',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({ postid, like })
-        }).then(re => {
-            refetch()
-        }).catch(error => console.log(error))
-    }
-    const heandelComment = (e) => {
-        e.preventDefault()
-        const form = e.target;
-        const comment = form.text.value
-        const commentData = {
-            postID: _id,
-            postDetails: {
-                postImg, postDetails, postDate: dataAdded
-            },
-            postCreatotEmail: email,
-            postCreatotdetails: {
-                name, userPicture
-            },
-            commcentCreatorEmail: user.email,
-            commcentCreatorData: {
-                name: user?.displayName, picture: user?.photoURL
-            },
-            comment, commentDate: new Date(),
-        }
-        //
-        fetch(`http://localhost:2100/comments`, {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(commentData)
-        }).then(re => {
-            form.reset()
-            console.log(re);
-        })
-            .catch(err => { console.log(err) })
-    }
     return (
         <>
             {datA?.map(post =>

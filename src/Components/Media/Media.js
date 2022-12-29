@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { BiHappyAlt, BiTrendingUp } from "react-icons/bi";
 import { FaHome } from "react-icons/fa";
 import { FcStackOfPhotos } from 'react-icons/fc';
@@ -11,12 +11,60 @@ import PostCart from '../PostCart';
 import MediaModal from './MediaModal';
 import TrandingCard from './TrandingCard';
 
-
-
 const Media = () => {
 
+    const [like, setLike] = useState(true)
+    const [commentPostData, srtCommentPostData] = useState([])
+    const { _id, postImg, postDetails, dataAdded, email, name, userPicture } = commentPostData;
     const { user, logOut } = useContext(AuthUser)
     const [modal, setModal] = useState(true)
+    const [datA, setDatA] = useState([])
+
+
+    const heandelLike = (like, postid) => {
+
+        fetch(`http://localhost:2100/posts/${postid}`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({ postid, like })
+        }).then(re => {
+            refetch()
+        }).catch(error => console.log(error))
+    }
+    const heandelComment = (e) => {
+        e.preventDefault()
+        const form = e.target;
+        const comment = form.text.value
+        const commentData = {
+            postID: _id,
+            postDetails: {
+                postImg, postDetails, postDate: dataAdded
+            },
+            postCreatotEmail: email,
+            postCreatotdetails: {
+                name, userPicture
+            },
+            commcentCreatorEmail: user.email,
+            commcentCreatorData: {
+                name: user?.displayName, picture: user?.photoURL
+            },
+            comment, commentDate: new Date(),
+        }
+        //
+        fetch(`http://localhost:2100/comments`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(commentData)
+        }).then(re => {
+            form.reset()
+            console.log(re);
+        })
+            .catch(err => { console.log(err) })
+    }
 
     const { data: posts = [], isLoading, refetch } = useQuery({
         queryKey: ['post'],
@@ -26,6 +74,16 @@ const Media = () => {
             return data
         }
     })
+
+    useEffect(() => {
+        fetch('http://localhost:2100/likeposts?type=tranding')
+            .then(results => results.json())
+            .then(data => {
+                console.log(data.data);
+                setDatA(data.data);
+            });
+    }, [posts]);
+
     if (isLoading) return <div className="">loading</div>
 
     return (
@@ -102,13 +160,24 @@ const Media = () => {
                     </div>
                     <h2 id='RecentPOst' className='font-bold text-xl py-7'>Recent post :</h2>
                     <PostCart
+
                         refetch={refetch}
+                        type={true}
                         posts={posts.data}
+                        heandelLike={heandelLike}
+                        like={like}
+                        heandelComment={heandelComment}
+                        srtCommentPostData={srtCommentPostData}
                     />
                     <h2 id='TraindingPOst' className='font-bold text-xl py-7'>Trainding post :</h2>
                     <TrandingCard
                         refetch={refetch}
-                        posts={posts.data}
+                        datA={datA}
+                        heandelLike={heandelLike}
+                        like={like}
+                        heandelComment={heandelComment}
+                        srtCommentPostData={srtCommentPostData}
+
                     />
                 </div>
             </div>
