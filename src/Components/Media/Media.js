@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { AuthUser } from '../../Context/UserContext';
 import PostCart from '../PostCart';
 import MediaModal from './MediaModal';
+import TrandingCard from './TrandingCard';
 
 
 
@@ -20,22 +21,13 @@ const Media = () => {
     const { data: posts = [], isLoading, refetch } = useQuery({
         queryKey: ['post'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:2100/posts')
+            const res = await fetch(`http://localhost:2100/posts?type=recentPost`)
             const data = res.json();
             return data
         }
     })
-    const { data: likeposts = [] } = useQuery({
-        queryKey: ['post'],
-        queryFn: async () => {
-            const res = await fetch('http://localhost:2100/likeposts')
-            const data = res.json();
-            return data
-        }
-    })
-    console.log(likeposts);
-
     if (isLoading) return <div className="">loading</div>
+
     return (
         <div className='min-h-screen container lg:px-28 m-auto '>
             <div className="pt-20"></div>
@@ -114,9 +106,9 @@ const Media = () => {
                         posts={posts.data}
                     />
                     <h2 id='TraindingPOst' className='font-bold text-xl py-7'>Trainding post :</h2>
-                    <PostCart
+                    <TrandingCard
                         refetch={refetch}
-                        Tposts={likeposts.data}
+                        posts={posts.data}
                     />
                 </div>
             </div>

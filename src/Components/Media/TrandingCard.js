@@ -1,32 +1,30 @@
-import { useQuery } from '@tanstack/react-query';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { BiComment } from "react-icons/bi";
 import { GiRoyalLove } from "react-icons/gi";
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
 import { Link } from "react-router-dom";
-import { AuthUser } from '../Context/UserContext';
-const PostCart = () => {
+import { AuthUser } from '../../Context/UserContext';
 
+
+const TrandingCard = ({ refetch, posts }) => {
     const { user } = useContext(AuthUser)
     const [like, setLike] = useState(true)
+    const [datA, setDatA] = useState([])
+
     const [commentPostData, srtCommentPostData] = useState([])
     const { _id, postImg, postDetails, dataAdded, email, name, userPicture } = commentPostData;
 
 
-    const { data: posts = [], isLoading, refetch } = useQuery({
-        queryKey: ['post'],
-        queryFn: async () => {
-            const res = await fetch(`http://localhost:2100/posts?type=recentPost`)
-            const data = res.json();
-            return data
-        }
-    })
+    useEffect(() => {
+        fetch('http://localhost:2100/likeposts?type=tranding')
+            .then(results => results.json())
+            .then(data => {
+                console.log(data.data);
+                setDatA(data.data);
+            });
+    }, [posts]);
 
-    // console.log(posts.data.length);
-
-    if (isLoading) return <div className="">loading</div>
-    // console.log(like);
 
     const heandelLike = (like, postid) => {
 
@@ -72,11 +70,9 @@ const PostCart = () => {
         })
             .catch(err => { console.log(err) })
     }
-
-
     return (
         <>
-            {posts?.data?.map(post =>
+            {datA?.map(post =>
                 <div key={post._id}>
                     <div className="bg-white shadow-md shadow-gray-300 rounded-md mb-5 p-4 ">
                         <div className="flex  justify-between mx-2">
@@ -87,7 +83,7 @@ const PostCart = () => {
                                 <div className="">
                                     <p> <span className='font-bold mr-2'>{post?.name} </span> create this post</p>
                                     <p className='text-sm text-gray-400'>{
-                                        post.dataAdded.length > 12 ? post.dataAdded.slice(0, 10) : post.dataAdded.length
+                                        post.dataAdded?.length > 12 ? post.dataAdded.slice(0, 10) : post.dataAdded?.length
                                     }</p>
                                 </div>
                             </div>
@@ -137,4 +133,4 @@ const PostCart = () => {
     );
 };
 
-export default PostCart;
+export default TrandingCard;
