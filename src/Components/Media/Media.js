@@ -23,7 +23,7 @@ const Media = () => {
 
     const heandelLike = (like, postid) => {
 
-        fetch(`http://localhost:2100/posts/${postid}`, {
+        fetch(`https://skybay-server.vercel.app/posts/${postid}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json'
@@ -53,7 +53,7 @@ const Media = () => {
             comment, commentDate: new Date(),
         }
         //
-        fetch(`http://localhost:2100/comments`, {
+        fetch(`https://skybay-server.vercel.app/comments`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -69,14 +69,14 @@ const Media = () => {
     const { data: posts = [], isLoading, refetch } = useQuery({
         queryKey: ['post'],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:2100/posts?type=recentPost`)
+            const res = await fetch(`https://skybay-server.vercel.app/posts?type=recentPost`)
             const data = res.json();
             return data
         }
     })
 
     useEffect(() => {
-        fetch('http://localhost:2100/likeposts?type=tranding')
+        fetch('https://skybay-server.vercel.app/likeposts?type=tranding')
             .then(results => results.json())
             .then(data => {
                 console.log(data.data);

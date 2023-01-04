@@ -7,7 +7,7 @@ const About = () => {
     const { user, loading, setLoading } = useContext(AuthUser);
     const [moduleData, setModuleData] = useState(null)
 
-    const url = `http://localhost:2100/user?email=${user.email}`
+    const url = `https://skybay-server.vercel.app/user?email=${user.email}`
     const { data: useR = [], isLoading, refetch } = useQuery({
         queryKey: [''],
         queryFn: async () => {

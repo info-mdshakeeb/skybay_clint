@@ -24,7 +24,7 @@ const UpdateModule = ({ setModuleData, moduleData, refetch }) => {
         updateUser(userInfo)
             .then(rs => {
                 emailChange(data.email)
-                fetch(`http://localhost:2100/user/${_id}`, {
+                fetch(`https://skybay-server.vercel.app/user/${_id}`, {
                     method: 'PUT',
                     headers: {
                         'content-type': 'application/json'

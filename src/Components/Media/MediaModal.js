@@ -40,7 +40,7 @@ const MediaModal = ({ setModal, refetch }) => {
                 postImg: imgUrl,
                 dataAdded: new Date()
             }
-            fetch(`http://localhost:2100/posts`, {
+            fetch(`https://skybay-server.vercel.app/posts`, {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json'

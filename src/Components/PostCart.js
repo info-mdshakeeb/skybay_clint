@@ -45,10 +45,8 @@ const PostCart = ({ posts, heandelLike, like, heandelComment, srtCommentPostData
                             <div className="my-3 mx-3 flex gap-5">
                                 <div className="flex items-center gap-1">
                                     <GiRoyalLove
-
                                         onClick={() => heandelLike(like, post._id)} />
                                     <p>{post?.likes}</p>
-
                                 </div>
                                 <div className="flex items-center gap-1">
                                     <BiComment />

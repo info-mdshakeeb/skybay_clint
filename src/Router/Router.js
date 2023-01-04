@@ -20,7 +20,7 @@ export const router = createBrowserRouter([
             { path: '/About', element: <ProvateRoutes><About /></ProvateRoutes> },
             {
                 path: '/media/:id',
-                loader: ({ params }) => fetch(`http://localhost:2100/post/${params.id}`),
+                loader: ({ params }) => fetch(`https://skybay-server.vercel.app/post/${params.id}`),
                 element: <ProvateRoutes><DetailsPage /></ProvateRoutes>
             },
         ]

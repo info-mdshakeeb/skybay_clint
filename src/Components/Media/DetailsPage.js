@@ -9,7 +9,7 @@ const DetailsPage = () => {
     const { data: comments = [], isLoading, refetch } = useQuery({
         queryKey: ['commnet'],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:2100/comments?postId=${id}`)
+            const res = await fetch(`https://skybay-server.vercel.app/comments?postId=${id}`)
             const data = res.json();
             return data
         }

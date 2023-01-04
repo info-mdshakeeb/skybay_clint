@@ -40,7 +40,7 @@ const Resiste = () => {
                             console.log(userdata);
                             updateUser(userInfo)
                                 .then(rs => {
-                                    fetch(`http://localhost:2100/user`, {
+                                    fetch(`https://skybay-server.vercel.app/user`, {
                                         method: "POST",
                                         headers: {
                                             'content-type': 'application/json'
